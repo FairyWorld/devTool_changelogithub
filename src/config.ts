@@ -47,6 +47,9 @@ export async function resolveConfig(options: ChangelogOptions) {
   // @ts-expect-error backward compatibility
   config.releaseRepo = config.releaseRepo || config.releaseGithub || config.repo
   config.prerelease = config.prerelease ?? isPrerelease(config.to)
+  config.commitFilterByPaths = config.commitFilterByPaths ?? []
+  if (config.commitFilterByPaths === true)
+    config.commitFilterByPaths = [config.cwd ?? process.cwd()]
 
   if (typeof config.repo !== 'string')
     throw new Error(`Invalid GitHub repository, expected a string but got ${JSON.stringify(config.repo)}`)

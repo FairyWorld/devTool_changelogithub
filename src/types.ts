@@ -102,13 +102,20 @@ export interface ChangelogOptions extends Partial<ChangelogenOptions> {
   assets?: string[] | string
 
   /**
+   * Paths to filter commits by
+   * If true, CWD will be used as the path
+   */
+  commitFilterByPaths?: string[] | true
+  /**
    * Style of the changelog
    * @default 'markdown'
    */
   style?: 'markdown' | 'plain'
 }
 
-export type ResolvedChangelogOptions = Required<ChangelogOptions>
+export type ResolvedChangelogOptions = Required<Omit<ChangelogOptions, 'commitFilterByPaths'>> & {
+  commitFilterByPaths: string[]
+}
 
 export interface AuthorInfo {
   commits: string[]
