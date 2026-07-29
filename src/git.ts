@@ -1,4 +1,4 @@
-import { RawGitCommit } from 'changelogen'
+import type { RawGitCommit } from 'changelogen'
 import { x } from 'tinyexec'
 import { getPrerelease, isValid, normalize } from 'verkit'
 
@@ -60,7 +60,8 @@ export async function getLastMatchingTag(
 ) {
   const inputVersionString = getVersionString(tagTemplate, inputTag)
   const isVersion = isValid(inputVersionString)
-  const isPrerelease = getPrerelease(inputVersionString) !== null
+  // `getPrerelease` returns an empty array for stable versions, and `null` for invalid ones
+  const isPrerelease = !!getPrerelease(inputVersionString)?.length
   const tags = await getGitTags()
   const filteredTags = tags.filter(tagFilter)
 
@@ -72,7 +73,7 @@ export async function getLastMatchingTag(
 
       return versionString !== inputVersionString
         && normalize(versionString) !== null
-        && getPrerelease(versionString) === null
+        && !getPrerelease(versionString)?.length
     })
   }
 
@@ -90,28 +91,29 @@ export async function getGitDiff(
   const r = await execCommand(
     'git',
     [
-      '--no-pager', 'log',
+      '--no-pager',
+      'log',
       `${from ? `${from}...` : ''}${to}`,
       '--pretty="----%n%s|%h|%an|%ae%n%b"',
       '--name-status',
       ...(paths.length > 0 ? ['--', ...paths] : []),
     ],
-  );
+  )
   return r
-    .split("----\n")
+    .split('----\n')
     .splice(1)
     .map((line) => {
-      const [firstLine, ..._body] = line.split("\n");
-      const [message, shortHash, authorName, authorEmail] =
-        firstLine.split("|");
+      const [firstLine, ..._body] = line.split('\n')
+      const [message, shortHash, authorName, authorEmail]
+        = firstLine.split('|')
       const r: RawGitCommit = {
         message,
         shortHash,
         author: { name: authorName, email: authorEmail },
-        body: _body.join("\n"),
-      };
-      return r;
-    });
+        body: _body.join('\n'),
+      }
+      return r
+    })
 }
 
 export async function isRefGitTag(to: string) {

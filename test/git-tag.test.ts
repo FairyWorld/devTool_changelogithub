@@ -1,18 +1,18 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { getLastMatchingTag } from '../src/git'
 
-const { execa } = vi.hoisted(() => ({
-  execa: vi.fn(),
+const { x } = vi.hoisted(() => ({
+  x: vi.fn(),
 }))
 
-vi.mock('execa', () => ({ execa }))
+vi.mock('tinyexec', () => ({ x }))
 
 beforeEach(() => {
-  execa.mockReset()
+  x.mockReset()
 })
 
 function mockTags(tags: string[]) {
-  execa.mockResolvedValue({
+  x.mockResolvedValue({
     stdout: `(HEAD -> main, ${tags.map(tag => `tag: ${tag}`).join(', ')})`,
   })
 }

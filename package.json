@@ -2,7 +2,7 @@
   "name": "changelogithub",
   "type": "module",
   "version": "15.0.3",
-  "packageManager": "pnpm@11.15.1",
+  "packageManager": "pnpm@11.17.0",
   "description": "Generate changelog for GitHub.",
   "author": "Anthony Fu <anthonyfu117@hotmail.com>",
   "license": "MIT",
@@ -41,9 +41,9 @@
     "dev": "tsdown --watch",
     "test": "vitest",
     "lint": "eslint .",
-    "prepublishOnly": "nr build",
+    "prepublishOnly": "pnpm run build",
     "release": "bumpp",
-    "start": "nr build && node dist/cli.mjs",
+    "start": "pnpm run build && node dist/cli.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -55,15 +55,16 @@
     "ofetch": "^1.5.1",
     "tinyexec": "^1.2.4",
     "tinyglobby": "^0.2.17",
-    "verkit": "^0.1.2"
+    "verkit": "^0.3.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^9.1.0",
+    "@antfu/eslint-config": "^9.2.0",
+    "@antfu/ni": "^30.3.0",
     "@antfu/utils": "^9.3.0",
-    "@types/node": "^26.1.1",
-    "bumpp": "^11.1.0",
-    "eslint": "^10.7.0",
-    "tsdown": "^0.22.12",
+    "@types/node": "^26.1.2",
+    "bumpp": "^12.0.0",
+    "eslint": "^10.8.0",
+    "tsdown": "^0.22.14",
     "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },

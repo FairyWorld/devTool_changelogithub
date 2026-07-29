@@ -1,6 +1,6 @@
 import type { ChangelogOptions } from './types'
-import { getGitDiff } from './git'
 import { resolveConfig } from './config'
+import { getGitDiff } from './git'
 import { resolveAuthors } from './github'
 import { parseCommits } from './parse'
 import { generateMarkdown } from './style/markdown'

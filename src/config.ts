@@ -1,5 +1,6 @@
 import type { ChangelogOptions, ResolvedChangelogOptions } from './types'
 import { getCurrentGitBranch, getFirstGitCommit, getGitHubRepo, getLastMatchingTag, getSafeTagTemplate, isPrerelease } from './git'
+import process from 'node:process'
 
 export function defineConfig(config: ChangelogOptions) {
   return config
