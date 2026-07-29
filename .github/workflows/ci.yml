@@ -9,11 +9,42 @@ on:
 permissions: {}
 
 jobs:
-  unit-test:
-    uses: sxzz/workflows/.github/workflows/unit-test.yml@main
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JS
+        uses: sxzz/workflows/setup-js@main
+
+      - name: Type Check
+        run: pnpm run typecheck
+
+      - name: Lint
+        run: pnpm run lint
+
+  # The tests generate a changelog from this repo's own git history, so they need
+  # the full clone that `fetch-all` gives us.
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [22, lts/*]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup JS
+        uses: sxzz/workflows/setup-js@main
+        with:
+          node-version: ${{ matrix.node-version }}
+          fetch-all: true
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Unit Test
+        run: pnpm run test
 
   # coverage:
   #   uses: sxzz/workflows/.github/workflows/coverage.yml@main
-  #   needs: unit-test
+  #   needs: [lint, test]
   #   permissions:
   #     id-token: write
