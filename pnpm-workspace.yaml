@@ -6,3 +6,6 @@ minimumReleaseAgeExclude:
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 604800 # 7 days
+update:
+  ignoreDeps:
+    - typescript@7
